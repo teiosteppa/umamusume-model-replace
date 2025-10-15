@@ -5,4 +5,4 @@ dependencies = [
   "UnityPy~=1.8.15",
   "pillow"
 ]
-requires-python = ">=3.12,<3.13"
+requires-python = ">=3.8,<3.13"

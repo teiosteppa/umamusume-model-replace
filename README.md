@@ -3,22 +3,22 @@
 
 
 
-# 使用方法
+# Usage
 
-- 安装`Python3.8及以上版本`
-- 安装依赖: `pip install -r requirements.txt`
-
-```
-UnityPy~=1.8.15
-```
-
-- 运行`main.py`
+- Install the `uv` package manager for Python
+- Install Python 3.12 & dependencies:
 
 ```shell
-python main.py
+uv sync
 ```
 
-- 根据提示操作即可。
+- Run the `main` module through `uv`:
+
+```shell
+uv run -m main
+```
+
+- Follow the prompts within:
 
 ```
 [1] replace head model

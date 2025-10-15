@@ -132,3 +132,7 @@ dmypy.json
 /umaModelReplace/backup
 /umaModelReplace/edited
 /editTexture
+
+# artifacts
+meta
+meta_plain.db
