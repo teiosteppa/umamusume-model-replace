@@ -39,8 +39,8 @@ class UmaReplace:
 
     def file_restore(self, hashs: t.Optional[t.List[str]] = None):
         """
-        恢复备份
-        :param hashs: bundle hash 列表, 若为 None, 则恢复备份文件夹内所有文件
+        Restore backups
+        :param hashs: bundle hash list; if None, restore all files in the backup folder
         """
         if not hashs:
             hashs = os.listdir(BACKUP_PATH)
@@ -203,9 +203,9 @@ class UmaReplace:
 
     def replace_body(self, id_orig: str, id_new: str):
         """
-        替换身体
-        :param id_orig: 原id, 例: 1046_01
-        :param id_new: 新id
+        Replace body
+        :param id_orig: original id, e.g., 1046_01
+        :param id_new: new id
         """
         orig_paths = assets_path.get_body_path(id_orig)
         new_paths = assets_path.get_body_path(id_new)
@@ -217,9 +217,9 @@ class UmaReplace:
 
     def replace_head(self, id_orig: str, id_new: str):
         """
-        替换头部
-        :param id_orig: 原id, 例: 1046_01
-        :param id_new: 新id
+        Replace head
+        :param id_orig: original id, e.g., 1046_01
+        :param id_new: new id
         """
         orig_paths = assets_path.get_head_path(id_orig)
         new_paths = assets_path.get_head_path(id_new)
@@ -229,11 +229,11 @@ class UmaReplace:
             except UmaFileNotFoundError as e:
                 print(e)
 
-    def replace_tail(self, id_orig: str, id_new: str):  # 目前无法跨模型更换尾巴, 更换目标不能和原马娘同时出场。
+    def replace_tail(self, id_orig: str, id_new: str):  # Currently cannot replace tails across models; the target cannot appear with the original Umamusume at the same time.
         """
-        替换尾巴
-        :param id_orig: 原id, 例: 1046
-        :param id_new: 新id
+        Replace tail
+        :param id_orig: original id, e.g., 1046
+        :param id_new: new id
         """
 
         def check_vaild_path(paths: list):
@@ -271,9 +271,9 @@ class UmaReplace:
             return
 
         if use_id1 != use_id2:
-            print(f"{id_orig} 模型编号: {use_id1}, {id_new} 模型编号: {use_id2}, 目前无法跨模型修改尾巴。")
+            print(f"{id_orig} model index: {use_id1}, {id_new} model index: {use_id2}. Cross-model tail modification is not supported.")
             return
-        print("注意, 更换尾巴后, 更换目标不能和原马娘同时出场。")
+        print("Note: After tail replacement, the target cannot appear on screen together with the original.")
         for i in range(len(orig_paths)):
             try:
                 self.replace_file_ids(orig_paths[i], new_paths[i], id_orig, id_new)
@@ -282,9 +282,9 @@ class UmaReplace:
 
     def edit_gac_chr_start(self, dress_id: str, type: str):
         """
-        替换开门人物
-        :param dress_id: 目标开门id, 例: 100101
-        :param type: 001骏川手纲，002秋川弥生
+        Replace gacha opening character
+        :param dress_id: target opening ID, e.g., 100101
+        :param type: 001 = Tazuna, 002 = Akikawa Yayoi
         """
 
         def edit_chr(orig_hash: str, dress_id: str):
@@ -308,9 +308,9 @@ class UmaReplace:
 
     def edit_cutin_skill(self, id_orig: str, id_target: str):
         """
-        替换技能
-        :param id_orig: 原id, 例: 100101
-        :param id_target: 新id
+        Replace skill
+        :param id_orig: original id, e.g., 100101
+        :param id_target: new id
         """
         target_path = assets_path.get_cutin_skill_path(id_target)
         target_hash = self.get_bundle_hash(target_path, None)
@@ -330,7 +330,7 @@ class UmaReplace:
                             target_clothe_id = str(character["_characterKeys"]["_selectClothId"])
 
         if target_tree is None:
-            print("目标无法解析")
+            print("Target could not be parsed")
             return
 
         for character in target_tree["_characterList"]:
@@ -361,13 +361,13 @@ class UmaReplace:
         with open(f"{EDITED_PATH}/{orig_hash}", "wb") as f:
             f.write(env.file.save())
         shutil.copyfile(f"{EDITED_PATH}/{orig_hash}", self.get_bundle_path(orig_hash))
-        print("替换完成")
+        print("Replacement complete")
 
     def replace_race_result(self, id_orig: str, id_new: str):
         """
-        替换G1胜利动作
-        :param id_orig: 原id, 例: 100101
-        :param id_new: 新id
+        Replace G1 victory action
+        :param id_orig: original id, e.g., 100101
+        :param id_new: new id
         """
         orig_paths = assets_path.get_crd_race_result_path(id_orig)
         new_paths = assets_path.get_crd_race_result_path(id_new)
