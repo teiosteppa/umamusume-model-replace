@@ -3,6 +3,7 @@ name = "umamusume-model-replace"
 version = "0.0.1"
 dependencies = [
   "UnityPy~=1.8.15",
-  "pillow"
+  "apsw-sqlite3mc>=3.46.1.0",
+  "pillow",
 ]
 requires-python = ">=3.8,<3.13"

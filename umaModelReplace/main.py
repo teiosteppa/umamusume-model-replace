@@ -1,10 +1,11 @@
 import UnityPy
-import sqlite3
+import apsw
 import os
 import shutil
 import typing as t
 from PIL import Image
 from . import assets_path
+from .decrypt import apply_encryption, key_hex
 
 spath = os.path.split(__file__)[0]
 BACKUP_PATH = f"{spath}/backup"
@@ -18,10 +19,11 @@ class UmaFileNotFoundError(FileNotFoundError):
 class UmaReplace:
     def __init__(self):
         self.init_folders()
-        profile_path = os.environ.get("UserProfile")
-        self.base_path = f"{profile_path}/AppData/LocalLow/Cygames/umamusume"
-        self.conn = sqlite3.connect(f"{self.base_path}/meta")
-        self.master_conn = sqlite3.connect(f"{self.base_path}/master/master.mdb")
+        profile_path = os.environ.get("ProgramFiles(x86)")
+        self.base_path = f"{profile_path}/Steam/steamapps/common/UmamusumePrettyDerby_Jpn/UmamusumePrettyDerby_Jpn_Data/Persistent"
+        self.conn = apsw.Connection(f"{self.base_path}/meta")
+        apply_encryption(self.conn, hexkey=key_hex)
+        self.master_conn = apsw.Connection(f"{self.base_path}/master/master.mdb")
 
     @staticmethod
     def init_folders():
