@@ -388,7 +388,7 @@ class UmaReplace:
             return d
 
         def get_all_dress_in_table():
-            self.master_conn.row_factory = dict_factory
+            self.master_conn.row_trace = dict_factory
             cursor = self.master_conn.cursor()
             cursor.execute("SELECT * FROM dress_data")
             # fetchall as result
@@ -398,7 +398,7 @@ class UmaReplace:
             return query
 
         def get_unique_in_table():
-            self.conn.row_factory = dict_factory
+            self.conn.row_trace = dict_factory
             cursor = self.conn.cursor()
             cursor.execute("SELECT n FROM a WHERE n like '%pfb_chr1____90'")
             # fetchall as result
@@ -417,26 +417,26 @@ class UmaReplace:
                 dress['head_sub_id'] = 90
             else:
                 dress['head_sub_id'] = 0
-            self.master_conn.row_factory = dict_factory
+            self.master_conn.row_trace = dict_factory
             cursor = self.master_conn.cursor()
-            cursor.execute("INSERT INTO dress_data VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-                           [dress['id'], dress['condition_type'], dress['have_mini'], dress['general_purpose'],
-                            dress['costume_type'], dress['chara_id'], dress['use_gender'], dress['body_shape'],
-                            dress['body_type'], dress['body_type_sub'], dress['body_setting'], dress['use_race'],
-                            dress['use_live'], dress['use_live_theater'], dress['use_home'], dress['use_dress_change'],
-                            dress['is_wet'], dress['is_dirt'], dress['head_sub_id'], dress['use_season'],
-                            dress['dress_color_main'], dress['dress_color_sub'], dress['color_num'],
-                            dress['disp_order'],
-                            dress['tail_model_id'], dress['tail_model_sub_id'], dress['mini_mayu_shader_type'],
-                            dress['start_time'], dress['end_time']])
-            self.master_conn.commit()
+            with self.master_conn:
+                cursor.execute("INSERT INTO dress_data VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+                            [dress['id'], dress['condition_type'], dress['have_mini'], dress['general_purpose'],
+                                dress['costume_type'], dress['chara_id'], dress['use_gender'], dress['body_shape'],
+                                dress['body_type'], dress['body_type_sub'], dress['body_setting'], dress['use_race'],
+                                dress['use_live'], dress['use_live_theater'], dress['use_home'], dress['use_dress_change'],
+                                dress['is_wet'], dress['is_dirt'], dress['head_sub_id'], dress['use_season'],
+                                dress['dress_color_main'], dress['dress_color_sub'], dress['color_num'],
+                                dress['disp_order'],
+                                dress['tail_model_id'], dress['tail_model_sub_id'], dress['mini_mayu_shader_type'],
+                                dress['start_time'], dress['end_time']])
             cursor.close()
 
         def unlock_data():
-            self.master_conn.row_factory = dict_factory
+            self.master_conn.row_trace = dict_factory
             cursor = self.master_conn.cursor()
-            cursor.execute("UPDATE dress_data SET use_live = 1, use_live_theater = 1")
-            self.master_conn.commit()
+            with self.master_conn:
+                cursor.execute("UPDATE dress_data SET use_live = 1, use_live_theater = 1")
             cursor.close()
 
         dresses = get_all_dress_in_table()
