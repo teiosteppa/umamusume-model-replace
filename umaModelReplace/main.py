@@ -19,8 +19,8 @@ class UmaFileNotFoundError(FileNotFoundError):
 class UmaReplace:
     def __init__(self):
         self.init_folders()
-        profile_path = os.environ.get("ProgramFiles(x86)")
-        self.base_path = f"{profile_path}/Steam/steamapps/common/UmamusumePrettyDerby_Jpn/UmamusumePrettyDerby_Jpn_Data/Persistent"
+        profile_path = os.environ.get("UserProfile")
+        self.base_path = f"{profile_path}/Umamusume/umamusume_Data/Persistent"
         self.conn = apsw.Connection(f"{self.base_path}/meta")
         apply_encryption(self.conn, hexkey=key_hex)
         self.master_conn = apsw.Connection(f"{self.base_path}/master/master.mdb")
