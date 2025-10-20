@@ -4,8 +4,7 @@ import os
 import shutil
 import typing as t
 from PIL import Image
-from . import assets_path
-from .decrypt import apply_encryption, key_hex
+from . import assets_path, decrypt
 
 spath = os.path.split(__file__)[0]
 BACKUP_PATH = f"{spath}/backup"
@@ -22,8 +21,52 @@ class UmaReplace:
         profile_path = os.environ.get("UserProfile")
         self.base_path = f"{profile_path}/Umamusume/umamusume_Data/Persistent"
         self.conn = apsw.Connection(f"{self.base_path}/meta")
-        apply_encryption(self.conn, hexkey=key_hex)
+        decrypt.apply_db_encryption(self.conn, hexkey=decrypt.db_key_hex)
+        self._load_bundle_keys()
         self.master_conn = apsw.Connection(f"{self.base_path}/master/master.mdb")
+
+    def _column_exists(self, table: str, column: str) -> bool:
+        """
+        error handling if column doesn't exist
+        won't replace assets if schema changes again
+        needs to actually be implemented tho lol
+        """
+        cur = self.conn.cursor()
+        rows = cur.execute(f"PRAGMA table_info({table})").fetchall()
+        # rows: (cid, name, type, notnull, dflt_value, pk)
+        return any(r[1].lower() == column.lower() for r in rows)
+
+    def _load_bundle_keys(self) -> None:
+        """
+        populate from meta:
+        - self.bundle_key_by_hash: Dict[str, int]
+        """
+        self.bundle_key_by_hash = {}
+
+        cur = self.conn.cursor()
+
+        has_e = self._column_exists("a", "e")  # ensure enc key is available
+
+        if has_e:
+            # Preferred path: the meta `a` table includes encryption column `e`
+            # We collect by both hash (h) and path/name (n), so callers can lookup by either.
+            rows = cur.execute("SELECT h, e FROM a WHERE e IS NOT NULL").fetchall()
+            for h, e in rows:
+                # normalize
+                if isinstance(h, bytes):
+                    h = h.decode("utf8", errors="ignore")
+
+                # store by hash (exact) and by file name (fallback), plus full path
+                if h:
+                    self.bundle_key_by_hash[h] = int(e)
+
+    def get_bundle_key(self, bundle_key: str) -> int | None:
+        """
+        public getter for decrypt methods to use bundle key(s)
+        """
+        # exact hash hit
+        if bundle_key in self.bundle_key_by_hash:
+            return self.bundle_key_by_hash[bundle_key]
 
     @staticmethod
     def init_folders():
@@ -55,10 +98,18 @@ class UmaReplace:
                 shutil.copyfile(fpath, self.get_bundle_path(i))
                 print(f"restore {i}")
 
-    @staticmethod
-    def replace_file_path(fname: str, id1: str, id2: str, save_name: t.Optional[str] = None) -> str:
-        env = UnityPy.load(fname)
+    # no longer a static method, could break decrypt into a different class but not yet
+    def replace_file_path(self, fname: str, id1: str, id2: str, save_name: t.Optional[str] = None) -> str:
+        # encryption key of bundle we're *reading from* (need both)
+        tgt_bundle_hash = fname.split("/")[-1]
+        tgt_bundle_key = self.get_bundle_key(tgt_bundle_hash)
+        tgt_xor_pad = decrypt.derive_pad(decrypt.asset_key_bytes, tgt_bundle_key)
 
+        with open(fname, "rb") as f:
+            raw = f.read()
+        # 256 is hardcoded, greetz to umaviewer & meeko
+        decrypted = decrypt.xor_bytes_from_offset(raw, 256, tgt_xor_pad)
+        env = UnityPy.load(decrypted)
         data = None
 
         for obj in env.objects:
@@ -91,15 +142,30 @@ class UmaReplace:
 
         if save_name is None:
             save_name = f"{EDITED_PATH}/{os.path.split(fname)[-1]}"
+
+        # do this with save_name for simplicity
+        # fetch encryption key of bundle we're *writing to*
+        src_bundle_hash = save_name.split("/")[-1]
+        src_bundle_key = self.get_bundle_key(src_bundle_hash)
+        src_xor_pad = decrypt.derive_pad(decrypt.asset_key_bytes, src_bundle_key)
+
+        # no edits to unitypy objects if data is None
+        # so we decrypt with tgt, replace IDs, reencrypt with src
         if data is None:
             with open(fname, "rb") as f:
                 data = f.read()
-                data = data.replace(id1.encode("utf8"), id2.encode("utf8"))
+            plain_data = decrypt.xor_bytes_from_offset(data, 256, tgt_xor_pad)
+            data = plain_data.replace(id1.encode("utf8"), id2.encode("utf8"))
+            # re-xor with original asset's same key before writing back
+            data = decrypt.xor_bytes_from_offset(data, 256, src_xor_pad)
             with open(save_name, "wb") as f:
                 f.write(data)
         else:
+            plain_data = env.file.save()
+            # encrypt with src asset's key
+            enc_bytes = decrypt.xor_bytes_from_offset(plain_data, 256, src_xor_pad)
             with open(save_name, "wb") as f:
-                f.write(env.file.save())
+                f.write(enc_bytes)
         return save_name
 
     def replace_texture2d(self, bundle_name: str):

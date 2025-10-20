@@ -1,6 +1,47 @@
-key_hex = "9C2BAB97BCF8C0C4F1A9EA7881A213F6C9EBF9D8D4C6A8E43CE5A259BDE7E9FD"
+from apsw import NotADBError
+import io
+from typing import BinaryIO
 
-def apply_encryption(db, **kwargs):
+db_key_hex: str = "9C2BAB97BCF8C0C4F1A9EA7881A213F6C9EBF9D8D4C6A8E43CE5A259BDE7E9FD"
+asset_key_bytes: bytes = bytes.fromhex("532B4631E4A7B9473E7CFB")
+
+"""
+Asset encryption
+"""
+def derive_pad(base_key: bytes, key_num: int) -> bytes:
+    """
+    shoutout to meeko, stole his pseudocode lol
+    port of UmaJPManager.DerivePad:
+      - key_num is treated as signed, 8-byte, little-endian
+      - pad length = len(base_key) * 8
+      - pad[i*8 + j] = base_key[i] ^ key_bytes[j]
+    """
+    if base_key is None or len(base_key) == 0:
+        raise ValueError("base_key must be non-empty bytes")
+    key_bytes = key_num.to_bytes(8, byteorder="little", signed=True)
+    pad = bytearray(len(base_key) * 8)
+    for i, kb in enumerate(base_key):
+        for j in range(8):
+            pad[i * 8 + j] = kb ^ key_bytes[j]
+    return bytes(pad)
+
+def xor_bytes_from_offset(buf: bytes, start_offset: int, pad: bytes) -> bytes:
+    """
+    returns XOR'ed bytes using input pad, starting from start_offset
+    """
+    if not buf or start_offset >= len(buf):
+        return buf
+    out = bytearray(buf)
+    pad_len = len(pad)
+    # absolute positions are the file positions (same as your reader)
+    for abs_pos in range(start_offset, len(out)):
+        out[abs_pos] ^= pad[abs_pos % pad_len]
+    return bytes(out)
+
+"""
+DB encryption (based on APSW docs)
+"""
+def apply_db_encryption(db, **kwargs):
     """You must include an argument for keying, and optional cipher configurations"""
 
     if db.in_transaction:
@@ -36,7 +77,10 @@ def apply_encryption(db, **kwargs):
         if db.pragma(pragma, value) != expected:
             raise ValueError(f"Failed to configure {pragma=}")
 
-    # Try to read from the database.  If the database is encrypted and
+    # Check integrity of the database.  If the database is encrypted and
     # the cipher/key information is wrong you will get NotADBError
     # because the file looks like random noise
-    db.pragma("quick_check")
+    try:
+        db.pragma("quick_check")
+    except NotADBError:
+        raise NotADBError(f"Unable to read encrypted meta database. Is the key correct?")
