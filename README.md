@@ -1,10 +1,7 @@
 # umamusume-model-replace
 - replace umamusume models
 
-
-
-# Usage
-
+# Installation (uv)
 - Install the `uv` package manager for Python
 - Install Python 3.12 & dependencies:
 
@@ -18,6 +15,28 @@ uv sync
 uv run -m main
 ```
 
+# Installation (pip)
+- Install Python 3.12. 3.13 will not work.
+- Set up a virtual environment. For Windows:
+
+```shell
+python -m venv .venv
+.venv\Scripts\activate
+```
+
+- Install the dependencies from `requirements.txt`:
+
+```shell
+pip install -r requirements.txt
+```
+
+- Run the `main` module:
+
+```shell
+python -m main
+```
+
+# Usage
 - Follow the prompts within:
 
 ```
