@@ -625,6 +625,7 @@ dependencies = [
     { name = "pillow", version = "11.3.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
     { name = "pillow", version = "12.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
     { name = "unitypy" },
+    { name = "vdf" },
 ]
 
 [package.metadata]
@@ -632,6 +633,7 @@ requires-dist = [
     { name = "apsw-sqlite3mc", specifier = ">=3.46.1.0" },
     { name = "pillow" },
     { name = "unitypy", specifier = "~=1.8.15" },
+    { name = "vdf", specifier = ">=3.4" },
 ]
 
 [[package]]
@@ -669,4 +671,13 @@ wheels = [
     { url = "https://files.pythonhosted.org/packages/cf/02/e48106bb415ca8688c81a271c7d2c5148da13ef32dec937b49cd7e12a551/UnityPy-1.8.20-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:d3585e0781baf6407d124cfae27ac026573e72a9c9014176d573316074cc8996", size = 5657785, upload-time = "2022-06-15T12:24:27.388Z" },
     { url = "https://files.pythonhosted.org/packages/b6/0f/ed49b3ebf957c4bcee541f9677476715a05f8536d92c44cd83939e63ba47/UnityPy-1.8.20-cp39-cp39-win32.whl", hash = "sha256:48558141c635ef2fb54fbaa6d56f6971cba9103320b12e82d831bb34b8f9db98", size = 5648219, upload-time = "2022-06-15T12:23:10.64Z" },
     { url = "https://files.pythonhosted.org/packages/65/4b/61740e4d26db0593512aa9f51523836a1f8f3f0f4ad63a27ecb226a19903/UnityPy-1.8.20-cp39-cp39-win_amd64.whl", hash = "sha256:6d968c48fb17a904231c8b3a809aeb360ffd10f727c00837245bd7aca016376a", size = 5649212, upload-time = "2022-06-15T12:23:12.69Z" },
+]
+
+[[package]]
+name = "vdf"
+version = "3.4"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/44/7f/74192f47d67c8bf3c47bf0d8487b3457614c2c98d58b6617721d217f3f79/vdf-3.4.tar.gz", hash = "sha256:fd5419f41e07a1009e5ffd027c7dcbe43d1f7e8ef453aeaa90d9d04b807de2af", size = 11132, upload-time = "2021-05-22T09:26:05.252Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/96/60/6456b687cf55cf60020dcd01f9bc51561c3cc84f05fd8e0feb71ce60f894/vdf-3.4-py2.py3-none-any.whl", hash = "sha256:68c1a125cc49e343d535af2dd25074e9cb0908c6607f073947c4a04bbe234534", size = 10357, upload-time = "2021-05-22T09:26:03.948Z" },
 ]

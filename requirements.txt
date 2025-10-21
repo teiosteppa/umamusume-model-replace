@@ -548,3 +548,7 @@ unitypy==1.8.20 \
     --hash=sha256:d3585e0781baf6407d124cfae27ac026573e72a9c9014176d573316074cc8996 \
     --hash=sha256:ee554bfdf401095e42d8598b4498765fcd6e51abb529e314c127e81f7f63f0e1
     # via umamusume-model-replace
+vdf==3.4 \
+    --hash=sha256:68c1a125cc49e343d535af2dd25074e9cb0908c6607f073947c4a04bbe234534 \
+    --hash=sha256:fd5419f41e07a1009e5ffd027c7dcbe43d1f7e8ef453aeaa90d9d04b807de2af
+    # via umamusume-model-replace

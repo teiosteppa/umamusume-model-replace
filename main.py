@@ -1,9 +1,59 @@
+import os
+import winreg
+import json
+import vdf
+
 import umaModelReplace
 
-uma = umaModelReplace.UmaReplace()
+def get_dmm_game_path() -> str | None:
+    profile_path = os.environ.get("UserProfile")
+    if profile_path is None:
+        return None
 
+    legacy_data_path = os.path.join(profile_path, "AppData",
+                                    "LocalLow", "Cygames", "umamusume")
+    if os.path.isfile(os.path.join(legacy_data_path, "meta")):
+        return legacy_data_path
+    else:
+        dmm_config_path = os.path.join(profile_path, "AppData", "Roaming",
+                                       "dmmgameplayer5", "dmmgame.cnf")
+        dmm_config = json.load(open(dmm_config_path, "r", encoding="utf-8"))
+        for product in dmm_config["contents"]:
+            if product["productId"] == "umamusume":
+                game_path = product["detail"]["path"]
+                return os.path.join(game_path, "umamusume_Data",
+                                    "Persistent")
 
-def replace_char_body_texture(char_id: str):
+def get_steam_game_path() -> str | None:
+    try:
+        key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\\WOW6432Node\\Valve\\Steam")
+        steam_path = winreg.QueryValueEx(key, "InstallPath")[0]
+        winreg.CloseKey(key)
+    except FileNotFoundError:
+        try:
+            # does this game even run on 32 bit windows lul
+            key = winreg.OpenKey(winreg.HKEY_LOCAL_MACHINE, r"SOFTWARE\\Valve\\Steam")
+            steam_path = winreg.QueryValueEx(key, "InstallPath")[0]
+            winreg.CloseKey(key)
+        except FileNotFoundError:
+            return None
+
+    libraryfolders_path = os.path.join(steam_path, "steamapps", "libraryfolders.vdf")
+    libraryfolders = vdf.load(open(libraryfolders_path, "r", encoding="utf-8"))
+
+    for library in libraryfolders["libraryfolders"].values():
+        if "3564400" in library["apps"]:
+            steam_path = library["path"]
+    game_path = os.path.join(steam_path, "steamapps", "common",
+                                "UmamusumePrettyDerby_Jpn",
+                                "UmamusumePrettyDerby_Jpn_Data",
+                                "Persistent")
+    if os.path.isdir(game_path):
+        return game_path
+    else:
+        return None
+
+def replace_char_body_texture(uma: umaModelReplace.UmaReplace, char_id: str):
     is_not_exist, msg = uma.save_char_body_texture(char_id, False)
     if not is_not_exist:
         print(f"Unpacked resources already exist: {msg}")
@@ -22,7 +72,7 @@ def replace_char_body_texture(char_id: str):
         print("Texture has been modified")
 
 
-def replace_char_head_texture(char_id: str):
+def replace_char_head_texture(uma: umaModelReplace.UmaReplace, char_id: str):
     for n, i in enumerate(uma.save_char_head_texture(char_id, False)):
         is_not_exist, msg = i
 
@@ -45,6 +95,38 @@ def replace_char_head_texture(char_id: str):
 
 
 if __name__ == "__main__":
+    # this could be way better with list comprehension lol
+    available_paths = []
+    available_paths += [get_dmm_game_path()] if get_dmm_game_path() is not None else []
+    available_paths += [get_steam_game_path()] if get_steam_game_path() is not None else []
+
+    base_path = ""
+    if len(available_paths) == 0:
+        print("Unable to locate UM:PD game directory\n")
+        exit(1)
+    elif len(available_paths) == 1:
+        base_path = available_paths[0]
+
+    while not base_path:
+        print("Multiple game directories detected:\n")
+        do_type = input(
+            f"[1] DMM - {available_paths[0]}\n"
+            f"[2] Steam - {available_paths[1]}\n"
+            "[99] Exit\n"
+            "Please select an option: "
+        )
+
+        if do_type == "1":
+            base_path = available_paths[0]
+        elif do_type == "2":
+            base_path = available_paths[1]
+        elif do_type == "99":
+            exit(0)
+        else:
+            continue
+        
+    print(f"Using game data directory {base_path}\n")
+    uma = umaModelReplace.UmaReplace(base_path)
     while True:
         do_type = input(
             "[1] Replace head model\n"
@@ -95,7 +177,7 @@ if __name__ == "__main__":
 
         if do_type == "5":
             print("Please enter a 7-character ID, e.g., 1046_01")
-            replace_char_body_texture(input("Character 7-character ID: "))
+            replace_char_body_texture(uma, input("Character 7-character ID: "))
 
         if do_type == "6":
             print("Please enter the 6-digit outfit ID for the regular gacha opening animation, e.g., 100101 or 100130")
@@ -131,7 +213,7 @@ if __name__ == "__main__":
 
         if do_type == "11":
             print("Please enter a 7-character ID, e.g., 1046_01")
-            replace_char_head_texture(input("Character 7-character ID: "))
+            replace_char_head_texture(uma, input("Character 7-character ID: "))
 
         if do_type == "98":
             uma.file_restore()

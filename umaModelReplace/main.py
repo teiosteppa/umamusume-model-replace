@@ -16,10 +16,9 @@ class UmaFileNotFoundError(FileNotFoundError):
 
 
 class UmaReplace:
-    def __init__(self):
+    def __init__(self, base_path: str):
         self.init_folders()
-        profile_path = os.environ.get("UserProfile")
-        self.base_path = f"{profile_path}/Umamusume/umamusume_Data/Persistent"
+        self.base_path = base_path
         self.conn = apsw.Connection(f"{self.base_path}/meta")
         decrypt.apply_db_encryption(self.conn, hexkey=decrypt.db_key_hex)
         self._load_bundle_keys()
