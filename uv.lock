@@ -275,6 +275,31 @@ wheels = [
 ]
 
 [[package]]
+name = "fsspec"
+version = "2025.3.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version < '3.9'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/34/f4/5721faf47b8c499e776bc34c6a8fc17efdf7fdef0b00f398128bc5dcb4ac/fsspec-2025.3.0.tar.gz", hash = "sha256:a935fd1ea872591f2b5148907d103488fc523295e6c64b835cfad8c3eca44972", size = 298491, upload-time = "2025-03-07T21:47:56.461Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/56/53/eb690efa8513166adef3e0669afd31e95ffde69fb3c52ec2ac7223ed6018/fsspec-2025.3.0-py3-none-any.whl", hash = "sha256:efb87af3efa9103f94ca91a7f8cb7a4df91af9f74fc106c9c7ea0efd7277c1b3", size = 193615, upload-time = "2025-03-07T21:47:54.809Z" },
+]
+
+[[package]]
+name = "fsspec"
+version = "2025.9.0"
+source = { registry = "https://pypi.org/simple" }
+resolution-markers = [
+    "python_full_version >= '3.10'",
+    "python_full_version == '3.9.*'",
+]
+sdist = { url = "https://files.pythonhosted.org/packages/de/e0/bab50af11c2d75c9c4a2a26a5254573c0bd97cea152254401510950486fa/fsspec-2025.9.0.tar.gz", hash = "sha256:19fd429483d25d28b65ec68f9f4adc16c17ea2c7c7bf54ec61360d478fb19c19", size = 304847, upload-time = "2025-09-02T19:10:49.215Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/47/71/70db47e4f6ce3e5c37a607355f80da8860a33226be640226ac52cb05ef2e/fsspec-2025.9.0-py3-none-any.whl", hash = "sha256:530dc2a2af60a414a832059574df4a6e10cce927f6f4a78209390fe38955cfb7", size = 199289, upload-time = "2025-09-02T19:10:47.708Z" },
+]
+
+[[package]]
 name = "lz4"
 version = "4.3.3"
 source = { registry = "https://pypi.org/simple" }
@@ -564,6 +589,15 @@ wheels = [
 ]
 
 [[package]]
+name = "pyfmodex"
+version = "0.7.2"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/0a/ed/6106a55d98868c0edb82aa8ee4fa5fa89712acbe2ab5a307adf962ac67fb/pyfmodex-0.7.2.tar.gz", hash = "sha256:d9ad3d7841a1c4cf4733cbedc69389f84c58a640d23d0ffa083ad6080f35103c", size = 111830, upload-time = "2024-03-08T07:41:32.687Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/2c/7b/f7fdcdf6a6e8fd951c41e91baae8c1cecfffc2ed3199157afd6ab5728716/pyfmodex-0.7.2-py3-none-any.whl", hash = "sha256:1c42112b788e80ee7b4b57ae25bbbc0a98eb1e32a8e7c9e1246698cdf72efa9d", size = 126703, upload-time = "2024-03-08T07:41:30.326Z" },
+]
+
+[[package]]
 name = "tabulate"
 version = "0.9.0"
 source = { registry = "https://pypi.org/simple" }
@@ -632,45 +666,55 @@ dependencies = [
 requires-dist = [
     { name = "apsw-sqlite3mc", specifier = ">=3.46.1.0" },
     { name = "pillow" },
-    { name = "unitypy", specifier = "~=1.8.15" },
+    { name = "unitypy", specifier = "~=1.10.18" },
     { name = "vdf", specifier = ">=3.4" },
 ]
 
 [[package]]
 name = "unitypy"
-version = "1.8.20"
+version = "1.10.18"
 source = { registry = "https://pypi.org/simple" }
 dependencies = [
     { name = "brotli" },
     { name = "etcpak" },
+    { name = "fsspec", version = "2025.3.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
+    { name = "fsspec", version = "2025.9.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
     { name = "lz4", version = "4.3.3", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
     { name = "lz4", version = "4.4.4", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.9'" },
     { name = "pillow", version = "10.4.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version < '3.9'" },
     { name = "pillow", version = "11.3.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version == '3.9.*'" },
     { name = "pillow", version = "12.0.0", source = { registry = "https://pypi.org/simple" }, marker = "python_full_version >= '3.10'" },
+    { name = "pyfmodex" },
     { name = "tabulate" },
     { name = "texture2ddecoder" },
 ]
-sdist = { url = "https://files.pythonhosted.org/packages/c6/ab/a39eb3c1bb5faea7d1cb8dd479bfd3e0bfacdb8f398f67ae31e15e113f0c/UnityPy-1.8.20.tar.gz", hash = "sha256:23aa5dab7cc4080053bc3a08fbde422b6894be720baab89be61339361444b885", size = 5609700, upload-time = "2022-06-15T12:16:51.985Z" }
+sdist = { url = "https://files.pythonhosted.org/packages/a7/76/73da5d18e435052e0aa08fba0ba049f4573624d87907b966c0a3da1828c3/unitypy-1.10.18.tar.gz", hash = "sha256:becea593e213ade2b92cc25eaf022154014e2c647c60710eb973de5f434ec4d6", size = 1832500, upload-time = "2024-09-12T10:28:27.768Z" }
 wheels = [
-    { url = "https://files.pythonhosted.org/packages/ae/95/54538d2a257110dfff88e3d0cfb81cbd4a79ddfd5e4aac90fab466a8f216/UnityPy-1.8.20-cp310-cp310-macosx_10_9_x86_64.whl", hash = "sha256:ee554bfdf401095e42d8598b4498765fcd6e51abb529e314c127e81f7f63f0e1", size = 5644547, upload-time = "2022-06-15T12:16:45.443Z" },
-    { url = "https://files.pythonhosted.org/packages/18/71/08d2133cbdce6c179658ad2f279c3b26eb4ef6b107c97bb3f997981f284e/UnityPy-1.8.20-cp310-cp310-manylinux2014_aarch64.whl", hash = "sha256:223fb36842fab7a471026313e582b830db27a440f09a638a87f56c238a35d8cf", size = 5659038, upload-time = "2022-06-15T12:27:06.507Z" },
-    { url = "https://files.pythonhosted.org/packages/de/ad/2a231364acb2fa3254223c691bd4621c3bba3854cf0bdbb7f482a954c2b7/UnityPy-1.8.20-cp310-cp310-manylinux2014_i686.whl", hash = "sha256:85eb2cd05257c78f7d40e4ecdb1fb010230579b8c9b0685ae825fb98e030215a", size = 5658032, upload-time = "2022-06-15T12:27:08.512Z" },
-    { url = "https://files.pythonhosted.org/packages/dd/53/6180f3b1fb39beb2381c83e38ad326290f9a6d6c83bab9e868400bee9f72/UnityPy-1.8.20-cp310-cp310-manylinux2014_x86_64.whl", hash = "sha256:4cbc4130f338f1d89b17d0472bbb2fb65177e24fe84ee78c41ef6d7ac2ede1bf", size = 5658083, upload-time = "2022-06-15T12:27:11.249Z" },
-    { url = "https://files.pythonhosted.org/packages/e0/16/c00475f03c35d17698f147245b05cea22aebfbb2a71f0c70b06c2c1ef310/UnityPy-1.8.20-cp310-cp310-win32.whl", hash = "sha256:36fa5d465ac657fe2fd38891046e188b544c76066f3786c7d2520775d8cf4806", size = 5648221, upload-time = "2022-06-15T12:19:08.211Z" },
-    { url = "https://files.pythonhosted.org/packages/28/cc/d55bafd8a934671baea226721eec3bf52fb5b9b963e62e989caa7e91cae8/UnityPy-1.8.20-cp310-cp310-win_amd64.whl", hash = "sha256:331e0d86a9f7e20a9b67313a2ff1e80ed6f0362bf0385a59bafc9e5ea367d92e", size = 5649214, upload-time = "2022-06-15T12:19:10.29Z" },
-    { url = "https://files.pythonhosted.org/packages/dd/58/4ecc2512c8b8648002469ea1f53ec41e75a9e0eb0b66e04d638195901fb8/UnityPy-1.8.20-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:5f55ecd65268c3d5f4e8c6840ac5c5ac3e6d24e6a949484d3145e3c7da02468f", size = 5644550, upload-time = "2022-06-15T12:16:45.053Z" },
-    { url = "https://files.pythonhosted.org/packages/64/5d/7ef26a37130b6d3d5666dd2fb8fa4234d0d779ae3a8c66c389cb199f7973/UnityPy-1.8.20-cp38-cp38-manylinux2014_aarch64.whl", hash = "sha256:a749fd513a86ffae8b4b0af6e9002b4936cdf60a3138bf3f12e56019101ebf7f", size = 5659474, upload-time = "2022-06-15T12:24:29.594Z" },
-    { url = "https://files.pythonhosted.org/packages/c1/88/8408b5bfb9a53b3974dcb9aaf9444ad589f4de77dcaf38faf0486956ac23/UnityPy-1.8.20-cp38-cp38-manylinux2014_i686.whl", hash = "sha256:cb9f73e4548541ad2c683d1c1d712f1dfd089cc578537cdb15711c705542433a", size = 5658390, upload-time = "2022-06-15T12:24:31.824Z" },
-    { url = "https://files.pythonhosted.org/packages/f6/b3/638e63910bca6893d93c79491b2b18b3544516de0b13464a1f0886d036b5/UnityPy-1.8.20-cp38-cp38-manylinux2014_x86_64.whl", hash = "sha256:26f07136b852799189917e8134024f403847e3e0e958f39173c053ddd012d634", size = 5658517, upload-time = "2022-06-15T12:24:34.006Z" },
-    { url = "https://files.pythonhosted.org/packages/f7/9a/5894752ea2ca7e733d155bcfd34dc2678e4d3e3752eb89d6bcc97d77860b/UnityPy-1.8.20-cp38-cp38-win32.whl", hash = "sha256:10e913dd59db8ae2dd2e9f89725d1c0ad49aaac0f18e38c36db59433750471fc", size = 5648226, upload-time = "2022-06-15T12:19:16.741Z" },
-    { url = "https://files.pythonhosted.org/packages/27/94/e7ead52ebf9e5b72d06fc69453658b649073810d2d6e91898e48bb726c35/UnityPy-1.8.20-cp38-cp38-win_amd64.whl", hash = "sha256:b49b34c779cdb3ef3ff2ef6e43e696bbedb2c5dd3be1f7e5193e40eaa65e4464", size = 5649213, upload-time = "2022-06-15T12:19:18.792Z" },
-    { url = "https://files.pythonhosted.org/packages/f3/4d/0acc2e0d56264012bd5209c3dae5713843a9bba7551e2d5b711cf5dd6c3d/UnityPy-1.8.20-cp39-cp39-macosx_10_9_x86_64.whl", hash = "sha256:3d56d81198efb59a5edce127127042600dddae3c8b0b17a2e3f75529eb8d12c6", size = 5644551, upload-time = "2022-06-15T12:16:52.071Z" },
-    { url = "https://files.pythonhosted.org/packages/1b/7f/620060818dcf2b597ad869b5625ee86c602812c9cb623d3a81af6496ac83/UnityPy-1.8.20-cp39-cp39-manylinux2014_aarch64.whl", hash = "sha256:0857b635b58993538290dc5b5a1bc712c8e21b24a624b43538e84a6c48480437", size = 5658770, upload-time = "2022-06-15T12:24:24.006Z" },
-    { url = "https://files.pythonhosted.org/packages/fd/b2/6892c1afb34301e3d9076991ed05725186f340ece8457a99da5da1f5afae/UnityPy-1.8.20-cp39-cp39-manylinux2014_i686.whl", hash = "sha256:24c60a5f02c14926bbbb025afdb2bc82709017b8cd71f023dfd01e2a14c73b40", size = 5657739, upload-time = "2022-06-15T12:24:25.624Z" },
-    { url = "https://files.pythonhosted.org/packages/cf/02/e48106bb415ca8688c81a271c7d2c5148da13ef32dec937b49cd7e12a551/UnityPy-1.8.20-cp39-cp39-manylinux2014_x86_64.whl", hash = "sha256:d3585e0781baf6407d124cfae27ac026573e72a9c9014176d573316074cc8996", size = 5657785, upload-time = "2022-06-15T12:24:27.388Z" },
-    { url = "https://files.pythonhosted.org/packages/b6/0f/ed49b3ebf957c4bcee541f9677476715a05f8536d92c44cd83939e63ba47/UnityPy-1.8.20-cp39-cp39-win32.whl", hash = "sha256:48558141c635ef2fb54fbaa6d56f6971cba9103320b12e82d831bb34b8f9db98", size = 5648219, upload-time = "2022-06-15T12:23:10.64Z" },
-    { url = "https://files.pythonhosted.org/packages/65/4b/61740e4d26db0593512aa9f51523836a1f8f3f0f4ad63a27ecb226a19903/UnityPy-1.8.20-cp39-cp39-win_amd64.whl", hash = "sha256:6d968c48fb17a904231c8b3a809aeb360ffd10f727c00837245bd7aca016376a", size = 5649212, upload-time = "2022-06-15T12:23:12.69Z" },
+    { url = "https://files.pythonhosted.org/packages/bf/51/035d19c74b0cb42be7c2b490e6ed04001491df4393a81182a17b044da242/UnityPy-1.10.18-cp310-cp310-manylinux_2_17_aarch64.whl", hash = "sha256:d9c057d37374678fec41692458b269ad02686457e341790fe120be3fd42db20a", size = 1105262, upload-time = "2024-09-12T10:29:38.877Z" },
+    { url = "https://files.pythonhosted.org/packages/4e/cf/dc698d30e125875bcfe4feb7d2ed1b1e8a7765c19ccf9c199cd9eda3ce33/UnityPy-1.10.18-cp310-cp310-manylinux_2_17_i686.whl", hash = "sha256:26b246aa59915a284ec98ee395b7a77c83b7e4b9d0793d7c4b7ccb030a2d8f38", size = 1102401, upload-time = "2024-09-12T10:29:42.728Z" },
+    { url = "https://files.pythonhosted.org/packages/25/d5/0054222ae1b86f61c62a197a1f6edffd7f1709034906f5a4703b8de07d3c/UnityPy-1.10.18-cp310-cp310-manylinux_2_17_x86_64.whl", hash = "sha256:0285eaf115dcb701fd6d45beaa997da6f62580dd556f00f79ac2e5a9474b6ed9", size = 1104829, upload-time = "2024-09-12T10:29:52.221Z" },
+    { url = "https://files.pythonhosted.org/packages/d3/6c/88d4603404bc40c5a0b5b25fda94d5c60953fabbbdad8189f9cdd540828d/UnityPy-1.10.18-cp310-cp310-win32.whl", hash = "sha256:8414f5157ef4ea15e8aed9d825866bd4d7f7484b96a1d4b9bd7684e7d8e39ad8", size = 1074747, upload-time = "2024-09-12T10:29:37.411Z" },
+    { url = "https://files.pythonhosted.org/packages/64/94/ac3aeaf78f74072e9dc1bddf49fb5651b4ab545775ca1e2355654fb063e9/UnityPy-1.10.18-cp310-cp310-win_amd64.whl", hash = "sha256:6e2b9c9bfb5b63db829d76fda478bafa27277abd1a64c96dcfd63487ef38f073", size = 1863116, upload-time = "2024-09-12T10:29:44.937Z" },
+    { url = "https://files.pythonhosted.org/packages/08/42/fe4a991554bd32c4ab9b37876312aabd8cfe5d4d4d3e69fa79000507560e/UnityPy-1.10.18-cp311-cp311-manylinux_2_17_aarch64.whl", hash = "sha256:22f6d675618315bf7b25a54c4be048c4ad1ce2c807978daa27f1f112039db789", size = 1106896, upload-time = "2024-09-12T10:29:34.044Z" },
+    { url = "https://files.pythonhosted.org/packages/f5/bf/22f41f3d6f2aaf5c25b92d0a071ce1ae5883cc5c48965010c8e084fd0cc1/UnityPy-1.10.18-cp311-cp311-manylinux_2_17_i686.whl", hash = "sha256:dcef8d076bbe3af8294f03c97fe4d86521932a4cd50e545695b4449bcba6edcb", size = 1103827, upload-time = "2024-09-12T10:29:36.636Z" },
+    { url = "https://files.pythonhosted.org/packages/f3/de/9448e0129dd7df144967ad358d40ff85954da57aa36b13a0fb80ab50a185/UnityPy-1.10.18-cp311-cp311-manylinux_2_17_x86_64.whl", hash = "sha256:e7de213c06b1a6deb8667b2ca481832b3ac96f8b1bfbeee60a60978963f4907a", size = 1106453, upload-time = "2024-09-12T10:29:40.232Z" },
+    { url = "https://files.pythonhosted.org/packages/f8/44/2481d651cfaa9a5aed58de96a7352ed399f9b4804b3060a04cecb535e0d5/UnityPy-1.10.18-cp311-cp311-win32.whl", hash = "sha256:05b055cf56177193213fc8ac92db3369957cff7c1a8094487a7075503df96a1e", size = 1074750, upload-time = "2024-09-12T10:29:38.542Z" },
+    { url = "https://files.pythonhosted.org/packages/38/2f/e699d82a5600cba470ae73c9534ebfc808a5b3b95af2c32453cddb9174db/UnityPy-1.10.18-cp311-cp311-win_amd64.whl", hash = "sha256:56f8fe859636fdc10b1eef3d39bc39b6abfea95c5e152a25899d3bc904312711", size = 1863113, upload-time = "2024-09-12T10:29:43.627Z" },
+    { url = "https://files.pythonhosted.org/packages/c0/08/ff6ba8590251036c2945207080a27a55212bad815c419823c3fdc83db13f/UnityPy-1.10.18-cp312-cp312-manylinux_2_17_aarch64.whl", hash = "sha256:c81045005cddd037c1fda176f26dd3fe4a7f27d028e75b0c263a6f0ee8491d0b", size = 1107394, upload-time = "2024-09-12T10:29:32.493Z" },
+    { url = "https://files.pythonhosted.org/packages/0c/4c/dee01c6f632c64cc66069cf79dfc787ea25e07121151cb64ec0e880d04ed/UnityPy-1.10.18-cp312-cp312-manylinux_2_17_i686.whl", hash = "sha256:416954e4e65fd6972ae33402f629a6aad5f073da2d719c7b3e5b89ea8d9e49c7", size = 1104331, upload-time = "2024-09-12T10:29:34.055Z" },
+    { url = "https://files.pythonhosted.org/packages/16/5d/983b367d97ea8c5c41a871c415c2648c5e74e4166f4869b24a8830a95a18/UnityPy-1.10.18-cp312-cp312-manylinux_2_17_x86_64.whl", hash = "sha256:3544b394c0d11b0ce0c20a30638b584c2584195f2d64894fcbbda9085e81e796", size = 1107033, upload-time = "2024-09-12T10:29:35.4Z" },
+    { url = "https://files.pythonhosted.org/packages/2b/2d/b64b55ae850f6acc73f3f54d10a0177ebab4c8db4b81c4b1b4bc3ea9cf20/UnityPy-1.10.18-cp312-cp312-win32.whl", hash = "sha256:30e65c3e259c46f0a321ba19d7f771ddc168b9c24b1cda6f722c870aefab7451", size = 1074812, upload-time = "2024-09-12T10:29:40.153Z" },
+    { url = "https://files.pythonhosted.org/packages/d5/b2/3fbef6ef223c89a5faf3317ffea03c809a208bfef49c28ea8297d8cdd3a2/UnityPy-1.10.18-cp312-cp312-win_amd64.whl", hash = "sha256:e2aaa9b0bbfea8af60fd80bf6e5a9487c1bfa1b871861bbc461bc26dcbeaeaaf", size = 1863162, upload-time = "2024-09-12T10:29:46.381Z" },
+    { url = "https://files.pythonhosted.org/packages/97/db/90c96ee0a55fe5268ee28363e6e5f53f7c72e27abc94a9bb438329284838/UnityPy-1.10.18-cp38-cp38-manylinux_2_17_aarch64.whl", hash = "sha256:d1ab7d08a4cbfb190140ed81cfab7b047bc96cb8eb59d69e268bb24de5d78a92", size = 1106080, upload-time = "2024-09-12T10:29:21.964Z" },
+    { url = "https://files.pythonhosted.org/packages/0b/7d/f7093b8f8fde372c3f7911e2dd1141f1b1bb7a76657a1b2b1fb62451bb53/UnityPy-1.10.18-cp38-cp38-manylinux_2_17_i686.whl", hash = "sha256:683762ef18c72aca4e3da25437f0dcd36b9040394033ede476c3342a3e31e8b0", size = 1102877, upload-time = "2024-09-12T10:29:23.214Z" },
+    { url = "https://files.pythonhosted.org/packages/3a/40/28bcc5c45feec707326933a9380da4d6f47904eeef1b8d93f609e99136f9/UnityPy-1.10.18-cp38-cp38-manylinux_2_17_x86_64.whl", hash = "sha256:393c84e77ab867b12fd4de7a90a66748150d063674bbfb303a1164f2e00b6f09", size = 1105412, upload-time = "2024-09-12T10:29:25.085Z" },
+    { url = "https://files.pythonhosted.org/packages/96/c0/3ddf5f2b66b9d1d9f23ac0ebac008c31dbd4cd6152b52876f52f4459cd24/UnityPy-1.10.18-cp38-cp38-win32.whl", hash = "sha256:235b3c56f316c6610e1967ce8bce48eea2b7cba340aa231fbc0ee19678bde2ba", size = 1074744, upload-time = "2024-09-12T10:28:30.549Z" },
+    { url = "https://files.pythonhosted.org/packages/83/4b/3b4d288773633fbea99117b1244a0d0bf248f99ec60544b337c82b7a8cf9/UnityPy-1.10.18-cp38-cp38-win_amd64.whl", hash = "sha256:d9e734312391f452b639d46c41e704495f00528f22cdf0a0813454b9a93cdd30", size = 1863113, upload-time = "2024-09-12T10:28:32.018Z" },
+    { url = "https://files.pythonhosted.org/packages/9a/94/eddbd7650963f008bc2a2a2518acdb38afc43a2ce5e001016a101c6bee82/UnityPy-1.10.18-cp39-cp39-manylinux_2_17_aarch64.whl", hash = "sha256:7a8978a5a35e86b8c168cf9e3a0f0b56c0a8f391cd212a496c9dd9a9c7c3e3d2", size = 1104866, upload-time = "2024-09-12T10:29:44.668Z" },
+    { url = "https://files.pythonhosted.org/packages/5c/fc/c156876d0820b7e5289b573a67a33199286e6510544409d32c31ad3a4c15/UnityPy-1.10.18-cp39-cp39-manylinux_2_17_i686.whl", hash = "sha256:db50cbb94d49b71424b26188414812733658a614e1e926cf5a93f1345d3b71af", size = 1102048, upload-time = "2024-09-12T10:29:48.796Z" },
+    { url = "https://files.pythonhosted.org/packages/4b/c8/cf4e2e9a3072a15962536bdc9a585b3b46ac7bc84d33cb007370a3c27902/UnityPy-1.10.18-cp39-cp39-manylinux_2_17_x86_64.whl", hash = "sha256:5aac2028000b1a2a3beb683717d1e75febc46503cabaa0d6e6d8a2eb3fb96138", size = 1104479, upload-time = "2024-09-12T10:29:53.908Z" },
+    { url = "https://files.pythonhosted.org/packages/b1/6f/4339477e55a574d882f6c1feb1a8fa9b75398de45100900785fa4a0e6b91/UnityPy-1.10.18-cp39-cp39-win32.whl", hash = "sha256:09be19c0246fbdb782c045a819a929625248ffd6bbff1a6ac8a0d2009c4ccba8", size = 1074746, upload-time = "2024-09-12T10:29:34.039Z" },
+    { url = "https://files.pythonhosted.org/packages/73/9c/f78263786224b16d9c33b089470893e4039bd67d0dc61b5971ab984f41e4/UnityPy-1.10.18-cp39-cp39-win_amd64.whl", hash = "sha256:044a2226ecacf2523fd83f786df6b172e6c25321e2ca4fc85f4439f71d90fd22", size = 1863114, upload-time = "2024-09-12T10:29:38.107Z" },
 ]
 
 [[package]]
