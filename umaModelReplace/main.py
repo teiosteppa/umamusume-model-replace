@@ -59,6 +59,17 @@ class UmaReplace:
                 if h:
                     self.bundle_key_by_hash[h] = int(e)
 
+    def copy_meta(self, out_path: str):
+        """
+        lazy helper for opening meta in db browser
+        """
+        db_backup = apsw.Connection(out_path)
+        decrypt.apply_db_encryption(db_backup, hexrekey=decrypt.db_key_hex)
+        with db_backup.backup("main", self.conn, "main") as backup:
+            while not backup.done:
+                backup.step()
+        decrypt.apply_db_encryption(db_backup, rekey="")
+
     def get_bundle_key(self, bundle_key: str) -> int | None:
         """
         public getter for decrypt methods to use bundle key(s)

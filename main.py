@@ -140,6 +140,7 @@ if __name__ == "__main__":
             "[9] Unlock Live outfits\n"
             "[10] Clear all Live blur effects\n"
             "[11] Modify character head texture\n"
+            "[97] Decrypt meta DB for querying\n"
             "[98] Restore all modifications\n"
             "[99] Exit\n"
             "Please select an option: "
@@ -214,6 +215,10 @@ if __name__ == "__main__":
         if do_type == "11":
             print("Please enter a 7-character ID, e.g., 1046_01")
             replace_char_head_texture(uma, input("Character 7-character ID: "))
+
+        if do_type == "97":
+            uma.copy_meta(f"{os.getcwd()}/meta.db")
+            print(f"Meta DB saved to {os.getcwd()}/meta.db")
 
         if do_type == "98":
             uma.file_restore()
