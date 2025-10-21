@@ -174,7 +174,14 @@ class UmaReplace:
 
         file_names = os.listdir(edited_path)
 
-        env = UnityPy.load(self.get_bundle_path(bundle_name))
+        bundle_key: int = self.get_bundle_key(bundle_name)
+        xor_pad = decrypt.derive_pad(decrypt.asset_key_bytes, bundle_key)
+
+        with open(self.get_bundle_path(bundle_name), "rb") as f:
+            raw_bundle = f.read()
+        decrypted = decrypt.xor_bytes_from_offset(raw_bundle, 256, xor_pad)
+
+        env = UnityPy.load(decrypted)
         for obj in env.objects:
             if obj.type.name == "Texture2D":
                 data = obj.read()
@@ -185,12 +192,15 @@ class UmaReplace:
                         data.save()
 
         save_name = f"{EDITED_PATH}/{os.path.split(bundle_name)[-1]}"
+        plain_data = env.file.save()
+        enc_bytes = decrypt.xor_bytes_from_offset(plain_data, 256, xor_pad)
+
         with open(save_name, "wb") as f:
-            f.write(env.file.save())
+            f.write(enc_bytes)
         return save_name
 
     def get_texture_in_bundle(self, bundle_name: str, src_names: t.Optional[t.List[str]], force_replace=False):
-        base_path = f"./editTexture/{bundle_name}"
+        base_path: str = f"./editTexture/{bundle_name}"
         if not os.path.isdir(base_path):
             os.makedirs(base_path)
 
@@ -198,15 +208,21 @@ class UmaReplace:
             if len(os.listdir(base_path)) > 0:
                 return False, base_path
 
-        env = UnityPy.load(self.get_bundle_path(bundle_name))
+        bundle_key: int = self.get_bundle_key(bundle_name)
+        xor_pad = decrypt.derive_pad(decrypt.asset_key_bytes, bundle_key)
+
+        with open(self.get_bundle_path(bundle_name), "rb") as f:
+            raw_bundle = f.read()
+        decrypted = decrypt.xor_bytes_from_offset(raw_bundle, 256, xor_pad)
+
+        env = UnityPy.load(decrypted)
         for obj in env.objects:
             if obj.type.name == "Texture2D":
                 data = obj.read()
                 if hasattr(data, "name"):
                     if src_names is None or (data.name in src_names):
                         img_data = data.read()
-                        image: Image = img_data.image
-                        image.save(f"{base_path}/{data.name}.png")
+                        data.image.save(f"{base_path}/{data.name}.png")
                         print(f"save {data.name} into {f'{base_path}/{data.name}.png'}")
         return True, base_path
 
